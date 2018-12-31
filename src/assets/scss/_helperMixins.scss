@@ -1,0 +1,13 @@
+﻿@mixin breakpoint($_pointName) {
+    @if $_pointName == XS {
+        @media only screen and (max-width: 479px) { @content; }
+    } @else if $_pointName == S {
+        @media only screen and (min-width: 480px) { @content; }
+    } @else if $_pointName == min-L {
+        @media only screen and (max-width: 991px) { @content; }
+    } @else if $_pointName == L {
+        @media only screen and (min-width: 992px) { @content; }
+    } @else if $_pointName == XXL {
+        @media only screen and (min-width: 1400px) { @content; }
+    }
+}
