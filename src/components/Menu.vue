@@ -1,8 +1,10 @@
 <template>
+  <!-- Element hosting the component -->
   <nav
     class="menu"
     :class="{ 'menu--active': menuActive }"
   >
+    <!-- Toggle menu button -->
     <button
       :key="'button'"
       class="menu__button btn-hamburger"
@@ -15,10 +17,12 @@
       />
     </button>
 
+    <!-- Element hosting the menu content -->
     <div
       :key="'content'"
       class="menu__content"
     >
+      <!-- Search -->
       <div class="menu__search search-bar">
         <input
           type="search"
@@ -33,7 +37,9 @@
           <span class="fa fa-search" />
         </button>
       </div>
+      <!-- END - Search -->
 
+      <!-- Menu list -->
       <ul class="menu-list">
         <RouterLink
           to="/"
@@ -67,7 +73,9 @@
           <a>Contact</a>
         </RouterLink>
       </ul>
+      <!-- END - Menu list -->
 
+      <!-- Menu footer -->
       <div class="menu__footer">
         <p class="site__title site__title--menu">
           Palo Alto
@@ -82,8 +90,11 @@
           </a>
         </p>
       </div>
+      <!-- END - Menu footer -->
     </div>
+    <!-- END - Element hosting the menu content -->
 
+    <!-- Page overlay displayed if menu is active (mobile view) -->
     <div
       v-if="menuActive"
       :key="'overlay'"
@@ -91,6 +102,7 @@
       @click="toggleMenu"
     />
   </nav>
+  <!-- END - Element hosting the component -->
 </template>
 
 <script>
@@ -113,6 +125,7 @@ export default {
     toggleMenu () {
       this.$store.commit('toggleMenu')
     },
+
     toggleSearch () {
       this.showSearch = !this.showSearch
     }
@@ -128,6 +141,7 @@ $_offset: 30px;
 $_padding--LR: 0 (40px + $_offset) 0 40px;
 $_padding--full: 40px (40px + $_offset) 40px 40px;
 
+// Hamburger button
 .btn-hamburger {
   background: transparent;
   cursor: pointer;
@@ -147,6 +161,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     width: 22px;
   }
 }
+
+// Hide menu button for large screens
 .menu__button {
   @include breakpoint(L) {
     display: none;
@@ -170,12 +186,16 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
   @include breakpoint(L) {
   }
 }
+
+// Move search to the end for lagre screens
 .menu__search {
   @include breakpoint(L) {
     order: 2;
   }
 }
 
+// ========================================= //
+// Search bar
 .search-bar {
   display: flex;
   flex-shrink: 0;
@@ -184,6 +204,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     padding: $_padding--LR;
   }
 }
+
+// Search input
 .search-bar__input {
   background: transparent;
   @include breakpoint(min-L) {
@@ -198,6 +220,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     width: 150px;
   }
 }
+
+// Search input placeholder
 .search-bar__input::placeholder {
   font-weight: 300;
   @include breakpoint(min-L) {
@@ -207,17 +231,25 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     color: $c_text--light;
   }
 }
+
+// Shrink input in hidden state
 .search-bar__input--hidden {
   margin-left: 0;
   width: 0;
 }
+
+// Search button
 .search-bar__button {
   background: transparent;
   @include breakpoint(min-L) {
     color: $c_text--inverse;
   }
 }
+// Search bar
+// ========================================= //
 
+// ========================================= //
+// Menu list
 .menu-list {
   @include breakpoint(min-L) {
     padding: $_padding--full;
@@ -226,6 +258,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     display: flex;
   }
 }
+
+// Menu item
 .menu-list__item {
   font-size: 0.9em;
   font-weight: 700;
@@ -240,6 +274,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     color: $c_text;
     padding: 0 16px;
   }
+
+  // Menu item link
   a {
     text-decoration: none;
     @include breakpoint(min-L) {
@@ -253,6 +289,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
       }
     }
   }
+
+  // Active state
   &.router-link-exact-active {
     a {
       @include breakpoint(min-L) {
@@ -264,6 +302,8 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     }
   }
 }
+// END - Menu list
+// ========================================= //
 
 .menu__footer {
   @include breakpoint(min-L) {
@@ -285,6 +325,7 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     display: none;
   }
 }
+
 .site__title--menu {
   color: $c_menu-txt;
   font-size: 21px;
@@ -301,11 +342,15 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
   z-index: 11;
 }
 
+// ========================================= //
+// Overrides for footer implementation
 .footer__menu {
   padding: 40px 0;
+
   .menu__button {
     display: none;
   }
+
   .menu__content {
     align-items: center;
     background: transparent;
@@ -317,11 +362,13 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
       justify-content: center;
     }
   }
+
   .search-bar__button {
     @include breakpoint(L) {
       color: $c_text--inverse;
     }
   }
+
   .menu-list {
     padding: 0;
     width: 100%;
@@ -349,11 +396,15 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
       display: none;
     }
   }
+
   .menu__footer  {
     display: none;
   }
 }
+// END - Overrides for footer implementation
+// ========================================= //
 
+// Animation
 .menu--active {
   .btn-hamburger__line {
     &:first-child {

@@ -1,30 +1,37 @@
 <template>
+  <!-- Element hosting the page content -->
   <div
     class="site"
     :class="{ 'site--show-menu': state.menuActive }"
   >
+    <!-- Site header -->
     <StickyHeader class="site__header" />
 
+    <!-- Site main content -->
     <main class="site__main">
       <div class="content content--main">
         <RouterView />
       </div>
     </main>
+    <!-- END - Site main content -->
 
+    <!-- Site footer -->
     <footer class="site__footer footer">
       <div class="content">
+        <!-- Site title -->
         <h1 class="site__title site__title--footer">
           Palo Alto
         </h1>
 
-        <Menu
-          class="footer__menu"
-        />
+        <!-- Footer navigation -->
+        <Menu class="footer__menu" />
 
+        <!-- Impresum -->
         <p class="footer__impresum">
           Nunc placerat dolor at lectus hendrerit dignissim. Ut tortor sem, consectetur nec hendrerit ut, ullamcorper ac odio. Donec viverra ligula at quam tincidunt imperdiet. Nulla mattis tincidunt auctor.
         </p>
 
+        <!-- Copyrights -->
         <p class="footer__copyrights">
           © 2015 - Palo Alto. All Rights Reserved. Designed & Developed by
           <span class="footer__author">
@@ -32,6 +39,7 @@
           </span>
         </p>
 
+        <!-- Social media links -->
         <nav class="footer__social-media icon-menu">
           <ul class="icon-menu--list">
             <li class="icon-menu--item">
@@ -68,9 +76,12 @@
             </li>
           </ul>
         </nav>
+        <!-- END - Social media links -->
       </div>
     </footer>
+    <!-- END - Site footer -->
   </div>
+  <!-- END - Element hosting the page content -->
 </template>
 
 <script>
@@ -97,6 +108,7 @@ export default {
 @import './assets/scss/variables';
 @import './assets/scss/helperMixins';
 
+// Basic styles
 html, body {
   color: $c_text;
   background: $c_body-bg;
@@ -108,6 +120,8 @@ html, body {
     font-size: 18px;;
   }
 }
+
+// Content host for page header, main and footer
 .content {
   @include breakpoint(min-L) {
     margin: 0 20px;
@@ -117,23 +131,31 @@ html, body {
     width: 952px;
   }
 }
+
+// ========================================= //
+// Page layout
 .site {
   max-width: 100vw;
   transition: margin-left 0.5s ease-in;
 }
+
+// Move entire content to show menu
 .site--show-menu {
   margin-left: calc(-75vw);
   .site__header {
     left: calc(-75vw);
   }
 }
+
 .site__header, .site__main, .site__footer {
   display: flex;
   justify-content: center;
 }
+
 .site__header {
   transition: left 0.5s ease-in, top 0.3s ease-in, opacity 0.3s ease-in;
 }
+
 .site__main {
   margin-top: $s_header-height;
   @include breakpoint(XS) {
@@ -143,6 +165,7 @@ html, body {
     margin-bottom: 120px;
   }
 }
+
 .content--main {
   background: $c_main-bg;
   box-shadow: 0 0 $s_main-shadow-blur rgba(0,0,0,0.1);
@@ -157,10 +180,15 @@ html, body {
     padding: 0 98px;
   }
 }
+
 .site__footer {
   background: $c_accent;
   justify-content: center;
 }
+// END - Page layout
+// ========================================= //
+
+// Site title and its modifiers
 .site__title {
   font-style: italic;
   font-weight: 700;
@@ -173,6 +201,8 @@ html, body {
   font-size: 2.25em;
   padding: 4.5rem 0 0;
 }
+
+// Site footer
 .footer {
   text-align: center;
 }
@@ -197,6 +227,7 @@ html, body {
   margin-bottom: 80px;
 }
 
+// Icon menu (used for social media icons)
 .icon-menu--list {
   display: flex;
   justify-content: center;

@@ -1,17 +1,22 @@
 <template>
+  <!-- Element hosting the component -->
   <header
     ref="header"
     class="sticky-header"
     :class="headerClass"
   >
+    <!-- Element hosting the component content -->
     <div class="content sticky-header__content">
       <h1 class="site__title site__title--header">
         Palo Alto
       </h1>
 
+      <!-- Navigation menu -->
       <Menu class="sticky-header__menu" />
     </div>
+    <!-- END - Element hosting the component content -->
   </header>
+  <!-- END - Element hosting the component -->
 </template>
 
 <script>
@@ -19,14 +24,19 @@ import Menu from './Menu.vue'
 
 export default {
   components: { Menu },
+
   data: () => ({
     currentY: 0,
     headerClass: 'sticky-header--hidden'
   }),
+
   created () {
     this.handleScroll()
   },
+
   methods: {
+    // Handle behavior of the component
+    // when page does scroll
     handleScroll () {
       this.setHeaderClass(window.pageYOffset)
       let scrolling
@@ -39,6 +49,9 @@ export default {
         }, 100)
       })
     },
+
+    // Set component class depending on
+    // the page Y scroll position
     setHeaderClass (pageY) {
       if (pageY === 0) {
         this.headerClass = 'sticky-header--max'
@@ -64,10 +77,14 @@ export default {
   width: 100vw;
   z-index: 10;
 }
+
+// Large header - when page is scrollet to the top
 .sticky-header--max {
   height: $s_header-height;
   top: 0;
 }
+
+// Hide header
 .sticky-header--hidden {
   height: 70px;
   opacity: 0;
@@ -76,6 +93,8 @@ export default {
     font-size: 2em;
   }
 }
+
+// Pin header to the top
 .sticky-header--pinned {
   background: $c_body-bg;
   box-shadow: 0 5px 10px rgba(0,0,0,0.1);
@@ -85,10 +104,14 @@ export default {
     font-size: 2em;
   }
 }
+
+// Center header content verticaly
 .sticky-header__content {
   align-items: center;
   display: flex;
 }
+
+// Push menu to the right
 .sticky-header__menu {
   margin-left: auto;
 }

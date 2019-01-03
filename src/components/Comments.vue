@@ -1,13 +1,18 @@
 <template>
+  <!-- Element hosting the component -->
   <section class="comments">
+    <!-- Component title -->
     <h3 class="comments__title">
       Comments
     </h3>
+
+    <!-- Comments items -->
     <div
       v-for="comment in state.comments"
       :key="comment.date"
       class="comment"
     >
+      <!-- User avatar -->
       <div class="comment__avatar">
         <img
           v-if="comment.avatar"
@@ -21,6 +26,7 @@
         />
       </div>
 
+      <!-- Comment title -->
       <div class="comment__title">
         <span class="comment__author">
           {{ comment.user.name }}
@@ -29,11 +35,15 @@
           {{ comment.date }}
         </span>
       </div>
+
+      <!-- Comment content -->
       <div class="comment__text">
         {{ comment.text }}
       </div>
     </div>
+    <!-- END - Comments items -->
   </section>
+  <!-- END - Element hosting the component -->
 </template>
 
 <script>
@@ -55,9 +65,12 @@ export default {
 @import '../assets/scss/variables';
 @import '../assets/scss/helperMixins';
 
+// Element hosting the component
 .comments {
   padding: 40px 0;
   position: relative;
+
+  // Top separator
   &::before {
     background: $c_separator;
     content: '';
@@ -80,12 +93,15 @@ export default {
     }
   }
 }
+
+// Component title
 .comments__title {
   font-size: 24px;
   font-weight: 700;
   padding-bottom: 24px;
 }
 
+// Comments items
 .comment {
   display: grid;
   @include breakpoint(XS) {
@@ -105,6 +121,8 @@ export default {
   }
   margin-bottom: 2rem;
 }
+
+// User avatar
 .comment__avatar {
   align-items: center;
   background: $c_menu-txt--active;
@@ -127,6 +145,8 @@ export default {
   font-size: 3rem;
   margin-bottom: -1rem;
 }
+
+// Comment title
 .comment__title {
   grid-area: title;
   margin-left: 1rem;
@@ -152,6 +172,8 @@ export default {
     margin-left: 1rem;
   }
 }
+
+// Comment content
 .comment__text {
   background: $c_separator;
   grid-area: text;

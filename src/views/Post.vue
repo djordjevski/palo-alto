@@ -1,6 +1,9 @@
 <template>
+  <!-- Element hosting the component -->
   <article class="post">
+    <!-- Article header -->
     <header class="post__header">
+      <!-- Post category tag -->
       <a
         class="post__category"
         href="#"
@@ -8,14 +11,19 @@
         {{ state.category }}
       </a>
 
+      <!-- Post date -->
       <p class="post__date">
         {{ state.date }}
       </p>
 
+      <!-- Post title -->
       <h2 class="post__title">
         {{ state.title }}
       </h2>
     </header>
+    <!-- END - Article header -->
+
+    <!-- Post image -->
     <div class="post__image">
       <img
         :src="state.image.src"
@@ -23,12 +31,15 @@
       >
     </div>
 
+    <!-- Post HTML content -->
     <div
       class="post__content"
       v-html="state.content"
     />
 
+    <!-- Post footer -->
     <footer class="post__footer">
+      <!-- Tags list -->
       <ul class="tags">
         <li
           v-for="tag in state.tags"
@@ -40,8 +51,10 @@
       </ul>
     </footer>
 
+    <!-- Comments component -->
     <Comments />
   </article>
+  <!-- END - Element hosting the component -->
 </template>
 
 <script>
@@ -78,6 +91,8 @@ export default {
     font-size: 14px;
   }
 }
+
+// Post category tag
 .post__category {
   color: $c_text--inverse;
   position: absolute;
@@ -102,6 +117,8 @@ export default {
     background: $c_accent--dark;
   }
 }
+
+// Post date
 .post__date {
   color: $c_text--light;
   font-weight: 700;
@@ -115,6 +132,8 @@ export default {
     margin-top: 60px;
   }
 }
+
+// Post title
 .post__title {
   border-bottom: 2px solid $c_separator;
   color: $c_text--dark;
@@ -135,6 +154,8 @@ export default {
     padding: 24px 0 48px;
   }
 }
+
+// Post image
 .post__image {
   margin: 2rem 0 3rem;
   text-align: center;
@@ -149,6 +170,8 @@ export default {
     margin: 0 24px 24px 0;
   }
 }
+
+// Post HTML content
 .post__content {
   line-height: 1.75;
   p, blockquote {
@@ -161,6 +184,8 @@ export default {
     padding-left: 1.25em;
   }
 }
+
+// Tags list
 .tags {
   color: rgba($c_text--dark, 0.3);
   display: flex;
