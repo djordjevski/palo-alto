@@ -2,10 +2,11 @@
   <!-- Element hosting the component -->
   <nav
     class="menu"
-    :class="{ 'menu--active': menuActive }"
+    :class="{ 'menu--active': menuActive && !isFooter, 'footer__menu': isFooter }"
   >
     <!-- Toggle menu button -->
     <button
+      v-if="!isFooter"
       :key="'button'"
       class="menu__button btn-hamburger"
       @click="toggleMenu"
@@ -42,41 +43,46 @@
       <!-- Menu list -->
       <ul class="menu-list">
         <RouterLink
-          to="/"
+          v-for="item in state.navigation"
+          :key="item.id"
+          :ref="item.id"
+          :to="item.route"
           tag="li"
           class="menu-list__item"
         >
-          <a>Home</a>
-        </RouterLink>
-
-        <RouterLink
-          to="/about"
-          tag="li"
-          class="menu-list__item"
-        >
-          <a>About</a>
-        </RouterLink>
-
-        <RouterLink
-          to="/archive"
-          tag="li"
-          class="menu-list__item"
-        >
-          <a>Archive</a>
-        </RouterLink>
-
-        <RouterLink
-          to="/contact"
-          tag="li"
-          class="menu-list__item"
-        >
-          <a>Contact</a>
+          <a>
+            {{ item.text }}
+          </a>
+          <button
+            v-if="item.submenu && !isFooter"
+            class="caret"
+            @click="toggleSubmenu(item.id)"
+          >
+            <span class="fa fa-caret-down" />
+          </button>
+          <ul
+            v-if="item.submenu && !isFooter"
+            class="submenu-list"
+          >
+            <RouterLink
+              v-for="subitem in item.submenu"
+              :key="subitem.id"
+              :to="subitem.route"
+              tag="li"
+              class="submenu-list__item"
+            >
+              <a>{{ subitem.text }}</a>
+            </RouterLink>
+          </ul>
         </RouterLink>
       </ul>
       <!-- END - Menu list -->
 
       <!-- Menu footer -->
-      <div class="menu__footer">
+      <div
+        v-if="!isFooter"
+        class="menu__footer"
+      >
         <p class="site__title site__title--menu">
           Palo Alto
         </p>
@@ -96,7 +102,7 @@
 
     <!-- Page overlay displayed if menu is active (mobile view) -->
     <div
-      v-if="menuActive"
+      v-if="menuActive && !isFooter"
       :key="'overlay'"
       class="menu__overlay"
       @click="toggleMenu"
@@ -106,16 +112,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import store from '../store/index'
 
 export default {
   store,
+
+  props: {
+    isFooter: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
 
   data: () => ({
     showSearch: false
   }),
 
   computed: {
+    ...mapState({
+      state: state => state.master
+    }),
+
     menuActive () {
       return this.$store.state.master.menuActive
     }
@@ -128,6 +147,15 @@ export default {
 
     toggleSearch () {
       this.showSearch = !this.showSearch
+    },
+
+    toggleSubmenu (reference) {
+      const menuItem = this.$refs[reference][0].$el
+      if (menuItem.classList.contains('menu-list__item--show-submenu')) {
+        menuItem.classList.remove('menu-list__item--show-submenu')
+        return
+      }
+      menuItem.classList.add('menu-list__item--show-submenu')
     }
   }
 }
@@ -183,8 +211,6 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     width: calc(75vw + #{$_offset});
     z-index: 12;
   }
-  @include breakpoint(L) {
-  }
 }
 
 // Move search to the end for lagre screens
@@ -234,8 +260,10 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
 
 // Shrink input in hidden state
 .search-bar__input--hidden {
-  margin-left: 0;
-  width: 0;
+  @include breakpoint(L) {
+    margin-left: 0;
+    width: 0;
+  }
 }
 
 // Search button
@@ -255,20 +283,20 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     padding: $_padding--full;
   }
   @include breakpoint(L) {
+    align-items: center;
     display: flex;
   }
 }
 
 // Menu item
 .menu-list__item {
-  font-size: 0.9em;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 16px;
+  position: relative;
   @include breakpoint(min-L) {
     align-items: center;
-    display: flex;
-    height: 3rem;
     color: $c_menu-txt;
+    display: flex;
+    flex-wrap: wrap;
   }
   @include breakpoint(L) {
     color: $c_text;
@@ -276,10 +304,15 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
   }
 
   // Menu item link
-  a {
+  > a {
+    font-weight: 700;
     text-decoration: none;
+    text-transform: uppercase;
     @include breakpoint(min-L) {
+      align-items: center;
       color: $c_menu-txt;
+      display: flex;
+      height: 3rem;
     }
     @include breakpoint(L) {
       color: $c_text;
@@ -302,7 +335,78 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     }
   }
 }
+
+.caret {
+  background: transparent;
+  @include breakpoint(min-L) {
+    align-items: center;
+    color: $c_menu-txt;
+    display: flex;
+    flex: 1;
+    height: 3rem;
+    justify-content: flex-end;
+  }
+  @include breakpoint(L) {
+    margin-left: 8px;
+  }
+}
 // END - Menu list
+// ========================================= //
+
+// ========================================= //
+// Submenu list
+.submenu-list {
+  display: none;
+  flex-flow: column;
+  @include breakpoint(min-L) {
+    flex: 1 0 100%;
+    padding: 0 0 8px;
+  }
+  @include breakpoint(L) {
+    background: $c_main-bg;
+    box-shadow: 0 0 $s_main-shadow-blur rgba(0,0,0,0.1);
+    left: 0;
+    padding: 8px 0;
+    position: absolute;
+    top: 28px;
+    width: 150px;
+  }
+}
+.submenu-list__item {
+  padding: 8px 16px;
+  a {
+    text-decoration: none;
+    @include breakpoint(min-L) {
+      color: $c_menu-txt;
+    }
+    @include breakpoint(L) {
+      &:hover {
+        color: $c_accent;
+      }
+    }
+  }
+}
+
+// Show submenu
+.menu-list__item--show-submenu {
+  .submenu-list {
+    display: flex;
+  }
+  .caret {
+    transform: rotate(180deg);
+    @include breakpoint(min-L) {
+      justify-content: unset
+    }
+  }
+}
+@include breakpoint(L) {
+  .menu-list__item:hover {
+    .submenu-list {
+      display: flex;
+    }
+  }
+}
+// END - Submenu list
 // ========================================= //
 
 .menu__footer {
@@ -346,10 +450,6 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
 // Overrides for footer implementation
 .footer__menu {
   padding: 40px 0;
-
-  .menu__button {
-    display: none;
-  }
 
   .menu__content {
     align-items: center;
@@ -395,10 +495,6 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     .menu__search {
       display: none;
     }
-  }
-
-  .menu__footer  {
-    display: none;
   }
 }
 // END - Overrides for footer implementation

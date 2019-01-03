@@ -24,7 +24,7 @@
         </h1>
 
         <!-- Footer navigation -->
-        <Menu class="footer__menu" />
+        <Menu :is-footer="true" />
 
         <!-- Impresum -->
         <p class="footer__impresum">
