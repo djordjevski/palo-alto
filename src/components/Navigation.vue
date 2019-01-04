@@ -2,14 +2,14 @@
   <!-- Element hosting the component -->
   <nav
     class="menu"
-    :class="{ 'menu--active': menuActive && !isFooter, 'footer__menu': isFooter }"
+    :class="{ 'menu--active': state.navigationActive && !isFooter, 'footer__menu': isFooter }"
   >
     <!-- Toggle menu button -->
     <button
       v-if="!isFooter"
       :key="'button'"
       class="menu__button btn-hamburger"
-      @click="toggleMenu"
+      @click="toggleNavigation"
     >
       <span
         v-for="n in 3"
@@ -102,17 +102,17 @@
 
     <!-- Page overlay displayed if menu is active (mobile view) -->
     <div
-      v-if="menuActive && !isFooter"
+      v-if="state.navigationActive && !isFooter"
       :key="'overlay'"
       class="menu__overlay"
-      @click="toggleMenu"
+      @click="toggleNavigation"
     />
   </nav>
   <!-- END - Element hosting the component -->
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 import store from '../store/index'
 
 export default {
@@ -133,29 +133,49 @@ export default {
   computed: {
     ...mapState({
       state: state => state.master
-    }),
+    })
+  },
 
-    menuActive () {
-      return this.$store.state.master.menuActive
+  watch: {
+    $route () {
+      this.closeSubmenu()
+      this.toggleNavigation(false)
     }
   },
 
   methods: {
-    toggleMenu () {
-      this.$store.commit('toggleMenu')
-    },
+    ...mapMutations([
+      'toggleNavigation'
+    ]),
 
     toggleSearch () {
       this.showSearch = !this.showSearch
     },
 
-    toggleSubmenu (reference) {
-      const menuItem = this.$refs[reference][0].$el
+    toggleSubmenu (item) {
+      const menuItem = this.$refs[item][0].$el
       if (menuItem.classList.contains('menu-list__item--show-submenu')) {
-        menuItem.classList.remove('menu-list__item--show-submenu')
+        this.closeSubmenu()
         return
       }
+      this.openSubmenu(menuItem)
+    },
+
+    openSubmenu (menuItem) {
       menuItem.classList.add('menu-list__item--show-submenu')
+      document.addEventListener('click', this.listener, true)
+    },
+
+    closeSubmenu () {
+      const menuItem = document.getElementsByClassName('menu-list__item--show-submenu')[0]
+      if (menuItem) {
+        menuItem.classList.remove('menu-list__item--show-submenu')
+        document.removeEventListener('click', this.listener, true)
+      }
+    },
+
+    listener (event) {
+      if (!event.target.closest('.menu-list__item--show-submenu')) this.closeSubmenu()
     }
   }
 }
@@ -458,6 +478,7 @@ $_padding--full: 40px (40px + $_offset) 40px 40px;
     position: relative;
     right: auto;
     width: 100%;
+    z-index: 1;
     @include breakpoint(L) {
       justify-content: center;
     }

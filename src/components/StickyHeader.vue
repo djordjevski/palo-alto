@@ -12,7 +12,7 @@
       </h1>
 
       <!-- Navigation menu -->
-      <Menu class="sticky-header__menu" />
+      <Navigation class="sticky-header__menu" />
     </div>
     <!-- END - Element hosting the component content -->
   </header>
@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import Menu from './Menu.vue'
+import Navigation from './Navigation.vue'
 
 export default {
-  components: { Menu },
+  components: { Navigation },
 
   data: () => ({
     currentY: 0,

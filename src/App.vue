@@ -2,7 +2,7 @@
   <!-- Element hosting the page content -->
   <div
     class="site"
-    :class="{ 'site--show-menu': state.menuActive }"
+    :class="{ 'site--show-menu': state.navigationActive }"
   >
     <!-- Site header -->
     <StickyHeader class="site__header" />
@@ -24,7 +24,7 @@
         </h1>
 
         <!-- Footer navigation -->
-        <Menu :is-footer="true" />
+        <Navigation :is-footer="true" />
 
         <!-- Impresum -->
         <p class="footer__impresum">
@@ -88,11 +88,11 @@
 import { mapState } from 'vuex'
 import store from './store/index'
 import StickyHeader from './components/StickyHeader.vue'
-import Menu from './components/Menu.vue'
+import Navigation from './components/Navigation.vue'
 export default {
   store,
 
-  components: { StickyHeader, Menu },
+  components: { StickyHeader, Navigation },
 
   computed: {
     ...mapState({

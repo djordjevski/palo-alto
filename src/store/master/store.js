@@ -1,5 +1,5 @@
 const state = {
-  menuActive: false,
+  navigationActive: false,
   navigation: [
     {
       id: 'home',
@@ -42,8 +42,12 @@ const state = {
 }
 
 const mutations = {
-  toggleMenu: state => {
-    state.menuActive = !state.menuActive
+  toggleNavigation: (state, payload) => {
+    if (typeof payload === 'boolean') {
+      state.navigationActive = payload
+      return
+    }
+    state.navigationActive = !state.navigationActive
   }
 }
 
