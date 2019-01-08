@@ -1,7 +1,6 @@
 <template>
   <!-- Element hosting the component -->
   <header
-    ref="header"
     class="sticky-header"
     :class="headerClass"
   >
@@ -12,7 +11,10 @@
       </h1>
 
       <!-- Navigation menu -->
-      <Navigation class="sticky-header__menu" />
+      <Navigation
+        :navigation-menu="navigationMenu"
+        class="sticky-header__menu"
+      />
     </div>
     <!-- END - Element hosting the component content -->
   </header>
@@ -24,6 +26,13 @@ import Navigation from './Navigation.vue'
 
 export default {
   components: { Navigation },
+
+  props: {
+    navigationMenu: {
+      type: Array,
+      required: true
+    }
+  },
 
   data: () => ({
     currentY: 0,

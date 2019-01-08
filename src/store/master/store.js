@@ -1,6 +1,6 @@
 const state = {
   navigationActive: false,
-  navigation: [
+  navigationMenu: [
     {
       id: 'home',
       text: 'Home',
@@ -37,6 +37,24 @@ const state = {
       id: 'contacts',
       text: 'Contacts',
       route: '/contacts'
+    }
+  ],
+  socialMedia: [
+    {
+      url: 'https://www.facebook.com/',
+      icon: 'fa fa-facebook-square'
+    },
+    {
+      url: 'https://twitter.com/',
+      icon: 'fa fa-twitter'
+    },
+    {
+      url: 'https://www.instagram.com/',
+      icon: 'fa fa-instagram'
+    },
+    {
+      url: 'https://www.pinterest.com/',
+      icon: 'fa fa-pinterest'
     }
   ]
 }

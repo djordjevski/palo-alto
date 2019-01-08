@@ -5,7 +5,10 @@
     :class="{ 'site--show-menu': state.navigationActive }"
   >
     <!-- Site header -->
-    <StickyHeader class="site__header" />
+    <StickyHeader
+      :navigation-menu="state.navigationMenu"
+      class="site__header"
+    />
 
     <!-- Site main content -->
     <main class="site__main">
@@ -24,7 +27,12 @@
         </h1>
 
         <!-- Footer navigation -->
-        <Navigation :is-footer="true" />
+        <nav class="footer__navigation">
+          <Menu
+            :state="state.navigationMenu"
+            :is-multilevel="false"
+          />
+        </nav>
 
         <!-- Impresum -->
         <p class="footer__impresum">
@@ -34,49 +42,20 @@
         <!-- Copyrights -->
         <p class="footer__copyrights">
           © 2015 - Palo Alto. All Rights Reserved. Designed & Developed by
-          <span class="footer__author">
+          <a
+            href="https://pixelbuddha.net/"
+            target="_blank"
+            class="footer__author"
+          >
             PixelBuddha Team
-          </span>
+          </a>
         </p>
 
         <!-- Social media links -->
-        <nav class="footer__social-media icon-menu">
-          <ul class="icon-menu--list">
-            <li class="icon-menu--item">
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-              >
-                <span class="fa fa-facebook-square" />
-              </a>
-            </li>
-            <li class="icon-menu--item">
-              <a
-                href="https://twitter.com/"
-                target="_blank"
-              >
-                <span class="fa fa-twitter" />
-              </a>
-            </li>
-            <li class="icon-menu--item">
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-              >
-                <span class="fa fa-instagram" />
-              </a>
-            </li>
-            <li class="icon-menu--item">
-              <a
-                href="https://www.pinterest.com/"
-                target="_blank"
-              >
-                <span class="fa fa-pinterest" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-        <!-- END - Social media links -->
+        <IconMenu
+          :state="state.socialMedia"
+          class="footer__social-media"
+        />
       </div>
     </footer>
     <!-- END - Site footer -->
@@ -88,11 +67,13 @@
 import { mapState } from 'vuex'
 import store from './store/index'
 import StickyHeader from './components/StickyHeader.vue'
-import Navigation from './components/Navigation.vue'
+import Menu from './components/Menu.vue'
+import IconMenu from './components/IconMenu.vue'
+
 export default {
   store,
 
-  components: { StickyHeader, Navigation },
+  components: { StickyHeader, Menu, IconMenu },
 
   computed: {
     ...mapState({
@@ -206,8 +187,48 @@ html, body {
 .footer {
   text-align: center;
 }
+.footer__navigation {
+  padding: $s_nav-offset 0;
+
+  .menu-list {
+    padding: 0;
+    width: 100%;
+    @include breakpoint(S) {
+      display: flex;
+      justify-content: center;
+    }
+    @include breakpoint(L) {
+      flex: 0;
+    }
+  }
+  .menu-list__search {
+    @include breakpoint(min-L) {
+      display: none;
+    }
+  }
+  .search-bar__input, .search-bar__button {
+    color: $c_text--inverse;
+  }
+  .menu-list__item {
+    justify-content: center;
+    @include breakpoint(S) {
+      padding: 0 16px;
+    }
+    @include breakpoint(L) {
+      a {
+        color: $c_text--inverse;
+      }
+    }
+    // Active state
+    &.router-link-exact-active {
+      a {
+        color: rgba($c_text--inverse, 0.4);
+      }
+    }
+  }
+}
 .footer__impresum, .footer__copyrights {
-  color:rgba($c_text--inverse, 0.4);
+  color: rgba($c_text--inverse, 0.4);
   line-height: 1.75;
   padding: 2rem 1.25rem;
 }
@@ -222,21 +243,12 @@ html, body {
 .footer__author {
   color: $c_text--inverse;
   font-weight: 700;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 .footer__social-media {
   margin-bottom: 80px;
-}
-
-// Icon menu (used for social media icons)
-.icon-menu--list {
-  display: flex;
-  justify-content: center;
-}
-.icon-menu--item {
-  font-size: 22px;
-  padding: 0 12px;
-  a {
-    color: $c_text--inverse;
-  }
 }
 </style>
